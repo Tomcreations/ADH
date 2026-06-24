@@ -1,4 +1,4 @@
-DISCLAIMER
+# Disclaimer
 
 ADH contains mods made by the community.
 
