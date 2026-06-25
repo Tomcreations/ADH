@@ -2,17 +2,17 @@
 
 ADH is currently in development.
 
-The main user interface and core GUI elements have been created and are functional. Development is currently focused on the backend systems that power the mod loader and content management features.
+The main user interface and core GUI elements are in place and working. Current development is focused on the backend systems that power mod installation, content handling, and loader behavior.
 
-Current Status
+## Current Status
 
 * Main GUI completed
 * Backend systems in active development
 * Features may change during development
 * Bugs and unfinished functionality are expected
 
-ADH is not yet considered a final release. Some features may be incomplete, unstable, or unavailable until development is finished.
+ADH is not yet a final release. Some features may be incomplete, unstable, or unavailable until development is further along.
 
-Thank you for your interest in ADH and for supporting the project while it is being developed.
+Thank you for your interest in ADH and for supporting the project during development.
 
 Created by TomCreations
