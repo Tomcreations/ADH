@@ -1,4 +1,4 @@
-]# ADH
+# ADH
 
 ADH has been released and is still in active development.
 
@@ -16,20 +16,9 @@ ADH is not yet considered final. Some features may be incomplete, unstable, or u
 
 ## Repository Structure
 
-### ADH Source Code
-
-https://github.com/Tomcreations/ADH/tree/main/src/ADH
-
-### Official Aestik Health Bar Mod Source Code
-
-https://github.com/Tomcreations/ADH/tree/main/src/Official%20Mods/Aestik%20Health%20Bar%20Mod
-
-### ADH Releases and Installer
-
-https://github.com/Tomcreations/ADH/tree/main/Releases/ADH
-
-### Official Aestik Health Bar Mod Releases
-
-https://github.com/Tomcreations/ADH/tree/main/Releases/Mod/EnemyHPBar
+* [ADH Source Code](https://github.com/Tomcreations/ADH/tree/main/src/ADH)
+* [Official ADH Enemy HP Bar Source Code](https://github.com/Tomcreations/ADH/tree/main/src/Official%20Mods/Aestik%20Health%20Bar%20Mod)
+* [ADH Releases and Installer](https://github.com/Tomcreations/ADH/tree/main/Releases/ADH)
+* [Official ADH Enemy HP Bar Releases](https://github.com/Tomcreations/ADH/tree/main/Releases/Mod/EnemyHPBar)
 
 Created by TomCreations
