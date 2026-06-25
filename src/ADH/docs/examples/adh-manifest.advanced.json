@@ -1,0 +1,91 @@
+{
+  "manifestVersion": "1.0",
+  "id": "studio.rooms-expansion",
+  "name": "Rooms Expansion",
+  "version": "2.3.1",
+  "author": "Studio Example",
+  "description": "Adds new rooms, content data, and a UI panel for custom room settings.",
+  "homepage": "https://example.com/rooms-expansion",
+  "support": {
+    "game": "Aestik",
+    "gameVersions": [
+      ">=1.0.0 <1.2.0"
+    ],
+    "loaderVersion": ">=1.0.0"
+  },
+  "classification": {
+    "channel": "unofficial",
+    "reviewedByAdh": false
+  },
+  "dependencies": [
+    {
+      "id": "python.requests",
+      "name": "requests",
+      "source": "pip",
+      "version": ">=2.32.0",
+      "required": false,
+      "reviewedByAdh": false,
+      "notes": "Used only for optional online room sharing."
+    },
+    {
+      "id": "runtime.vc-redist-2022",
+      "name": "Microsoft Visual C++ Redistributable 2022",
+      "source": "runtime",
+      "version": ">=14.0",
+      "required": true,
+      "reviewedByAdh": false,
+      "notes": "Required by a bundled native support library."
+    }
+  ],
+  "install": {
+    "createFolders": [
+      {
+        "path": "Mods/RoomsExpansion"
+      },
+      {
+        "path": "Mods/RoomsExpansion/Data"
+      },
+      {
+        "path": "Packs/RoomsExpansion"
+      }
+    ],
+    "copyFiles": [
+      {
+        "from": "files/RoomsExpansion.dll",
+        "to": "Mods/RoomsExpansion/RoomsExpansion.dll",
+        "overwrite": true,
+        "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+      },
+      {
+        "from": "files/default-room-pack.json",
+        "to": "Packs/RoomsExpansion/default-room-pack.json",
+        "overwrite": true
+      },
+      {
+        "from": "files/settings-template.json",
+        "to": "Mods/RoomsExpansion/Data/settings-template.json",
+        "overwrite": false
+      }
+    ]
+  },
+  "entrypoints": [
+    {
+      "type": "dotnet-assembly",
+      "path": "Mods/RoomsExpansion/RoomsExpansion.dll"
+    },
+    {
+      "type": "content-pack",
+      "path": "Packs/RoomsExpansion/default-room-pack.json"
+    }
+  ],
+  "capabilities": [
+    "new-rooms",
+    "ui-overlay",
+    "asset-replacement"
+  ],
+  "custom": {
+    "studioMetadata": {
+      "contentTier": "extended"
+    }
+  }
+}

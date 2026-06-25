@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ADH</title>
+  <style>
+    :root {
+      --bg: #121a2e;
+      --bg-top: #121425;
+      --panel: #0a0f1a;
+      --panel-soft: #0f1627;
+      --panel-muted: #1e2636;
+      --line: rgba(145, 168, 214, 0.28);
+      --line-soft: rgba(145, 168, 214, 0.14);
+      --text: #f4f7ff;
+      --muted: #a8b6d3;
+      --muted-strong: #c1cce6;
+      --accent: #93bbff;
+      --accent-soft: rgba(147, 187, 255, 0.18);
+      --good: #85df9f;
+      --warn: #f1cb77;
+      --bad: #ff8b8b;
+      --button: #485063;
+      --button-hover: #59627a;
+      --shadow: 0 26px 48px rgba(0, 0, 0, 0.34);
+      --radius: 16px;
+      --font: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      --adh-background: url("https://adh.app/ADH-Background.png");
+      --adh-logo: url("https://adh.app/ADH-Logo.png");
+    }
+
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; }
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: var(--font);
+      color: var(--text);
+      background:
+        linear-gradient(180deg, rgba(10, 15, 27, 0.58), rgba(10, 15, 27, 0.72)),
+        var(--adh-background) center center / cover no-repeat,
+        linear-gradient(180deg, #131c31 0%, #12192a 52%, #111827 100%);
+    }
+
+    .app {
+      display: grid;
+      grid-template-rows: 57px 1fr;
+      width: 100%;
+      height: 100%;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: 268px 1fr 138px;
+      align-items: center;
+      gap: 16px;
+      padding: 0 0 0 14px;
+      background: #121425;
+      border-bottom: 1px solid rgba(196, 211, 248, 0.12);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 46px;
+      height: 46px;
+      flex: 0 0 46px;
+      background: var(--adh-logo) center center / contain no-repeat;
+    }
+
+    .brand-text {
+      display: flex;
+      align-items: baseline;
+      gap: 2px;
+      white-space: nowrap;
+    }
+
+    .brand-name {
+      font-size: 19px;
+      font-weight: 600;
+      letter-spacing: 0.1px;
+    }
+
+    .brand-version {
+      font-size: 11px;
+      color: var(--text);
+      opacity: 0.88;
+      font-weight: 600;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      gap: 18px;
+      height: 100%;
+    }
+
+    .tab {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 400;
+      padding: 0 2px;
+      position: relative;
+    }
+
+    .tab:hover,
+    .tab.active {
+      color: var(--text);
+    }
+
+    .tab.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .window-spacer {
+      height: 100%;
+    }
+
+    .content {
+      padding: 0;
+      min-height: 0;
+    }
+
+    .page {
+      display: none;
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      padding: 0;
+      animation: fade-in 140ms ease;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .page.mods,
+    .page.packs,
+    .page.settings {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(11, 16, 28, 0.94), rgba(13, 18, 31, 0.96));
+    }
+
+    .page.mods::before,
+    .page.packs::before,
+    .page.settings::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(8, 12, 23, 0.78), rgba(8, 12, 23, 0.84)),
+        var(--adh-background) 76% 58% / cover no-repeat;
+      opacity: 0.18;
+      filter: blur(1px);
+      pointer-events: none;
+    }
+
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .frame {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      min-height: 0;
+      padding: 0;
+      background: transparent;
+    }
+
+    .info-shell {
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(8, 12, 23, 0.34), rgba(8, 12, 23, 0.48)),
+        var(--adh-background) center center / cover no-repeat;
+    }
+
+    .notice {
+      position: absolute;
+      top: 72px;
+      left: 34px;
+      width: min(430px, calc(100vw - 84px));
+      padding: 10px 12px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--text);
+      background: rgba(8, 12, 23, 0.1);
+      border: 0;
+      border-radius: 10px;
+      backdrop-filter: blur(3px);
+      text-shadow: 0 1px 10px rgba(4, 7, 12, 0.72);
+    }
+
+    .notice p {
+      margin: 0 0 8px;
+    }
+
+    .notice a {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
+    .scene-wrap {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .scene {
+      width: 100%;
+      height: 100%;
+    }
+
+    .launch-row {
+      position: absolute;
+      left: 34px;
+      bottom: 22px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 18px;
+      padding: 0;
+    }
+
+    .launch-card {
+      width: 250px;
+    }
+
+    .launch-btn {
+      width: 100%;
+      height: 40px;
+      border-radius: 6px;
+      border: 1px solid rgba(225, 232, 248, 0.16);
+      background:
+        linear-gradient(180deg, rgba(67, 75, 95, 0.34), rgba(67, 75, 95, 0.34)),
+        linear-gradient(180deg, rgba(8, 12, 23, 0.34), rgba(8, 12, 23, 0.48)),
+        var(--adh-background) center center / cover no-repeat;
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      backdrop-filter: blur(7px);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+    }
+
+    .launch-btn:hover {
+      background:
+        linear-gradient(180deg, rgba(83, 92, 113, 0.46), rgba(83, 92, 113, 0.46)),
+        linear-gradient(180deg, rgba(8, 12, 23, 0.34), rgba(8, 12, 23, 0.48)),
+        var(--adh-background) center center / cover no-repeat;
+    }
+
+    .launch-btn.primary {
+      background:
+        linear-gradient(180deg, rgba(67, 75, 95, 0.34), rgba(67, 75, 95, 0.34)),
+        linear-gradient(180deg, rgba(8, 12, 23, 0.34), rgba(8, 12, 23, 0.48)),
+        var(--adh-background) center center / cover no-repeat;
+    }
+
+    .launch-btn.primary:hover {
+      background:
+        linear-gradient(180deg, rgba(83, 92, 113, 0.46), rgba(83, 92, 113, 0.46)),
+        linear-gradient(180deg, rgba(8, 12, 23, 0.34), rgba(8, 12, 23, 0.48)),
+        var(--adh-background) center center / cover no-repeat;
+    }
+
+    .list-page {
+      display: grid;
+      grid-template-rows: auto auto auto 1fr auto;
+      height: 100%;
+      min-height: 0;
+    }
+
+    .mods-disclaimer {
+      margin: 12px 40px 0;
+      padding: 10px 12px;
+      border: 1px solid rgba(241, 203, 119, 0.24);
+      border-radius: 8px;
+      background: rgba(18, 24, 37, 0.64);
+      color: #f5f7ff;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .search-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      padding: 10px 40px 0;
+    }
+
+    .search-box {
+      flex: 1 1 auto;
+      height: 28px;
+      border-radius: 4px;
+      background: rgba(7, 11, 20, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 0 12px;
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+    }
+
+    .search-box::placeholder {
+      color: var(--muted);
+    }
+
+    .search-side {
+      color: var(--text);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .filter-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 10px 40px 10px;
+      border-bottom: 1px solid rgba(220, 228, 246, 0.1);
+    }
+
+    .filter-set {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      flex-wrap: wrap;
+    }
+
+    .filter-label {
+      color: var(--muted);
+      font-size: 14px;
+      margin-right: 8px;
+    }
+
+    .chip {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      font-size: 14px;
+      padding: 7px 10px;
+      cursor: pointer;
+      border-radius: 0;
+    }
+
+    .chip.active {
+      background: rgba(147, 187, 255, 0.78);
+      color: #ffffff;
+    }
+
+    .count-text {
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .list-wrap {
+      min-height: 0;
+      overflow: auto;
+      padding: 12px 40px;
+    }
+
+    .list-wrap::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    .list-wrap::-webkit-scrollbar-thumb {
+      background: rgba(125, 148, 191, 0.2);
+      border-radius: 999px;
+    }
+
+    .rows {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding-bottom: 10px;
+    }
+
+    .mod-row {
+      border: 1px solid rgba(160, 180, 224, 0.36);
+      border-radius: 3px;
+      background: rgba(7, 10, 16, 0.76);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .mod-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto auto;
+      align-items: center;
+      gap: 18px;
+      min-height: 46px;
+      padding: 0 16px;
+      cursor: pointer;
+    }
+
+    .mod-name {
+      font-size: 15px;
+      color: #ffffff;
+    }
+
+    .mod-title {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .mod-subline {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 14px;
+    }
+
+    .inline-status {
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .mini-progress {
+      width: 150px;
+      height: 6px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .mini-progress-fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #7aa7ff, #a9c8ff);
+      transition: width 120ms ease;
+    }
+
+    .mod-state {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .row-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0 0 12px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 24px;
+      padding: 0 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.06);
+      color: #f5f7ff;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .tag.official {
+      background: rgba(133, 223, 159, 0.16);
+      border-color: rgba(133, 223, 159, 0.28);
+      color: #baf0c9;
+    }
+
+    .tag.unofficial {
+      background: rgba(241, 203, 119, 0.14);
+      border-color: rgba(241, 203, 119, 0.24);
+      color: #f5d992;
+    }
+
+
+    .repo-btn {
+      width: 38px;
+      min-width: 38px;
+      padding: 0;
+      font-size: 0;
+      position: relative;
+    }
+
+    .repo-btn::before {
+      content: "";
+      display: block;
+      width: 18px;
+      height: 18px;
+      margin: 0 auto;
+      background: no-repeat center / contain url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 98 96'><path fill='white' d='M49 0C21.9 0 0 22 0 49.2c0 21.8 14 40.3 33.5 46.9 2.4.5 3.3-1 3.3-2.3 0-1.1 0-4.9-.1-8.9-13.6 3-16.5-5.8-16.5-5.8-2.2-5.7-5.5-7.2-5.5-7.2-4.5-3.1.3-3 .3-3 5 .4 7.6 5.2 7.6 5.2 4.4 7.7 11.6 5.5 14.4 4.2.4-3.2 1.7-5.5 3.1-6.8-10.8-1.2-22.2-5.5-22.2-24.3 0-5.4 1.9-9.9 5.1-13.4-.5-1.2-2.2-6.2.5-12.9 0 0 4.2-1.3 13.7 5.1 4-1.1 8.2-1.7 12.4-1.7s8.5.6 12.4 1.7c9.5-6.4 13.7-5.1 13.7-5.1 2.7 6.7 1 11.7.5 12.9 3.2 3.6 5.1 8 5.1 13.4 0 18.9-11.4 23.1-22.3 24.3 1.8 1.5 3.3 4.5 3.3 9.2 0 6.6-.1 11.9-.1 13.5 0 1.3.9 2.8 3.3 2.3C84 89.4 98 71 98 49.2 98 22 76.1 0 49 0z'/></svg>");
+      opacity: 0.92;
+    }
+
+    .toggle {
+      width: 40px;
+      height: 22px;
+      border-radius: 999px;
+      position: relative;
+      border: 1px solid rgba(200, 212, 240, 0.26);
+      background: rgba(255, 255, 255, 0.05);
+      cursor: pointer;
+    }
+
+    .toggle.disabled {
+      opacity: 0.55;
+      cursor: default;
+    }
+
+    .toggle::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: rgba(216, 222, 236, 0.7);
+      transition: transform 120ms ease, background 120ms ease;
+    }
+
+    .toggle.on::after {
+      transform: translateX(18px);
+      background: #ddebff;
+    }
+
+    .mini-btn {
+      min-width: 84px;
+      height: 30px;
+      border-radius: 4px;
+      border: 1px solid rgba(228, 234, 247, 0.12);
+      background: #434b5f;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .mini-btn:hover {
+      background: #535c71;
+    }
+
+    .mini-btn.danger {
+      background: #4d4450;
+    }
+
+    .mini-btn.install {
+      background: #4b5f7f;
+    }
+
+    .mini-btn.install:hover {
+      background: #5a7094;
+    }
+
+    .mini-btn.loading {
+      opacity: 0.92;
+      cursor: wait;
+    }
+
+    .expand-mark {
+      width: 14px;
+      height: 14px;
+      position: relative;
+      opacity: 0.9;
+    }
+
+    .expand-mark::before,
+    .expand-mark::after {
+      content: "";
+      position: absolute;
+      top: 6px;
+      width: 8px;
+      height: 2px;
+      background: rgba(245, 247, 255, 0.9);
+    }
+
+    .expand-mark::before {
+      left: 0;
+      transform: rotate(45deg);
+    }
+
+    .expand-mark::after {
+      right: 0;
+      transform: rotate(-45deg);
+    }
+
+    .mod-row.expanded .expand-mark {
+      transform: rotate(180deg);
+    }
+
+    .row-detail {
+      display: none;
+      padding: 0 16px 16px;
+      border-top: 1px solid rgba(157, 175, 216, 0.15);
+      background: linear-gradient(180deg, rgba(13, 18, 29, 0.82), rgba(10, 14, 22, 0.88));
+    }
+
+    .mod-row.expanded .row-detail {
+      display: block;
+    }
+
+    .detail-copy {
+      padding-top: 12px;
+      color: var(--muted-strong);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px 18px;
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .detail-grid b {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .dep-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .dep-chip {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(147, 187, 255, 0.11);
+      border: 1px solid rgba(147, 187, 255, 0.16);
+      color: var(--text);
+      font-size: 12px;
+    }
+
+    .detail-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .utility-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 40px 18px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .utility-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .ghost-btn {
+      height: 32px;
+      border-radius: 4px;
+      border: 1px solid rgba(225, 232, 248, 0.12);
+      background: rgba(11, 18, 31, 0.64);
+      color: var(--text);
+      padding: 0 12px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .ghost-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 220px;
+      color: var(--muted);
+      border: 1px solid rgba(201, 214, 245, 0.08);
+      background: rgba(8, 12, 19, 0.78);
+    }
+
+    .packs-footer {
+      display: flex;
+      gap: 20px;
+      padding: 0 20px 12px;
+    }
+
+    .packs-footer .launch-btn {
+      height: 30px;
+      flex: 1 1 0;
+      font-size: 14px;
+    }
+
+    .settings-page {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      height: 100%;
+      padding: 24px 24px 18px;
+    }
+
+    .panel {
+      background: rgba(14, 20, 32, 0.76);
+      border: 1px solid rgba(165, 183, 224, 0.12);
+      border-radius: 8px;
+      padding: 18px;
+      min-width: 0;
+    }
+
+    .panel-title {
+      margin: 0 0 8px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .panel-copy {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .stack {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .setting-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-top: 1px solid rgba(175, 192, 225, 0.1);
+    }
+
+    .setting-row:first-child {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .setting-copy {
+      min-width: 0;
+    }
+
+    .setting-copy b {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .setting-copy span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    @media (max-width: 1100px) {
+      .topbar {
+        grid-template-columns: 220px 1fr;
+      }
+
+      .settings-page {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark"></div>
+        <div class="brand-text">
+          <span class="brand-name">ADH</span>
+          <span class="brand-version">v1.0.0</span>
+        </div>
+      </div>
+      <nav class="tabs">
+        <button class="tab active" data-page="info">Info</button>
+        <button class="tab" data-page="mods">Mods</button>
+        <button class="tab" data-page="packs">Packs</button>
+        <button class="tab" data-page="settings">Settings</button>
+      </nav>
+      <div class="window-spacer"></div>
+    </header>
+
+    <main class="content">
+      <section id="page-info" class="page active">
+        <div class="frame info-shell">
+          <div class="notice">
+            <p id="noticeLineOne">ADH is linked to your Aestik Steam install and will load the active mod set automatically when the game starts through Steam.</p>
+            <p id="noticeLineTwo">Choose vanilla for a clean Steam launch, or launch modded to use the enabled ADH setup.</p>
+          </div>
+
+          <div class="scene-wrap">
+            <div class="scene"></div>
+          </div>
+
+          <div>
+            <div class="launch-row">
+              <div class="launch-card">
+                <button class="launch-btn" data-action="launchVanilla">Launch Vanilla Game</button>
+              </div>
+              <div class="launch-card">
+                <button class="launch-btn primary" data-action="launchModded">Launch Modded Game</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="page-mods" class="page">
+        <div class="frame list-page">
+          <div class="mods-disclaimer">If you see the 'unofficial' tag, the content could potentially be unsafe. Please ensure the mod has a verifiable online history or is open source. If it is marked 'official,' you can download it with ease.</div>
+
+          <div class="search-row">
+            <input id="modSearch" class="search-box" type="text" placeholder="Mod Search" />
+            <div class="search-side">Advanced Search</div>
+          </div>
+
+          <div class="filter-row">
+            <div class="filter-set">
+              <span class="filter-label">Filter Mods:</span>
+              <button class="chip active" data-filter="all">All</button>
+              <button class="chip" data-filter="installed">Installed</button>
+              <button class="chip" data-filter="enabled">Enabled</button>
+            </div>
+            <div id="modsCountText" class="count-text">0 / 0</div>
+          </div>
+
+          <div class="list-wrap">
+            <div id="modsList" class="rows"></div>
+          </div>
+
+          <div class="utility-bar">
+            <span id="modsFootNote">Steam launch uses the enabled mods shown here.</span>
+            <div class="utility-actions">
+              <button class="ghost-btn" data-action="openModsFolder">Open Mods Folder</button>
+              <button class="ghost-btn" data-action="refresh">Refresh</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="page-packs" class="page">
+        <div class="frame list-page">
+          <div class="search-row">
+            <div class="search-side" style="font-size:24px;font-weight:600;">Packs</div>
+            <div id="packsCountText" class="count-text">0 available</div>
+          </div>
+
+          <div class="filter-row">
+            <div class="filter-set">
+              <span class="filter-label">Available Packs:</span>
+            </div>
+            <div class="count-text">Importable content bundles</div>
+          </div>
+
+          <div class="list-wrap">
+            <div id="packsList" class="rows"></div>
+          </div>
+
+          <div class="packs-footer">
+            <button class="launch-btn" data-action="openPacksFolder">Open Packs Folder</button>
+            <button class="launch-btn" data-action="import">Import Pack</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="page-settings" class="page">
+        <div class="frame settings-page" style="grid-template-columns: 1fr 1fr 1fr;">
+          <section class="panel">
+            <h2 class="panel-title">Steam Integration</h2>
+            <p class="panel-copy">ADH keeps the loader synced inside Aestik so normal Steam launches use your current enabled mod set. Use the vanilla option below when you want one clean launch with no mod bootstrap.</p>
+            <div class="stack">
+              <div class="setting-row">
+                <div class="setting-copy">
+                  <b>Modded Steam launch</b>
+                  <span id="settingsModdedText">Steam will use the active ADH setup automatically.</span>
+                </div>
+                <button class="ghost-btn" data-action="launchModded">Launch Modded</button>
+              </div>
+              <div class="setting-row">
+                <div class="setting-copy">
+                  <b>Vanilla launch</b>
+                  <span>Starts Aestik through Steam once without loading ADH mods.</span>
+                </div>
+                <button class="ghost-btn" data-action="launchVanilla">Launch Vanilla</button>
+              </div>
+              <div class="setting-row">
+                <div class="setting-copy">
+                  <b>Game location</b>
+                  <span id="gameRootSetting">Waiting for automatic Steam detection.</span>
+                </div>
+                <button class="ghost-btn" data-action="openGameFolder">Open Game Folder</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <h2 class="panel-title">Library Tools</h2>
+            <p class="panel-copy">Import local content when you need it, but keep the main UI focused on launching and managing what is already installed.</p>
+            <div class="button-grid">
+              <button class="ghost-btn" data-action="import">Import Local Mod</button>
+              <button class="ghost-btn" data-action="openModsFolder">Mods Folder</button>
+              <button class="ghost-btn" data-action="openPacksFolder">Packs Folder</button>
+            </div>
+          </section>
+
+          <section class="panel">
+            <h2 class="panel-title">Developer</h2>
+            <p class="panel-copy">Publish and manage developer projects for single mods and multi-mod packs. Packs are treated as bundled installs for multiple mods in one go.</p>
+            <div class="button-grid">
+              <button class="ghost-btn" data-action="openDeveloperMods">Upload Mod Project</button>
+              <button class="ghost-btn" data-action="openDeveloperPacks">Upload Pack Project</button>
+              <button class="ghost-btn" data-action="openDeveloperManage">Manage Projects</button>
+              <button class="ghost-btn" data-action="refresh">Refresh Catalog</button>
+            </div>
+            <div class="setting-row" style="margin-top:18px;">
+              <div class="setting-copy">
+                <b>Manifest requirement</b>
+                <span>Zip packages must include a valid ADH manifest. If a zip contains more than one manifest candidate, ADH will ask which one to use.</span>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const app = {
+      page: "info",
+      search: "",
+      filter: "all",
+      selectedKey: "",
+      state: {
+        status: "Waiting",
+        gameDetected: false,
+        gameRoot: "",
+        steamState: "Waiting",
+        loaderInstalled: false,
+        modsCount: 0,
+        packsCount: 0,
+        mods: [],
+        packs: []
+      }
+    };
+
+    function send(action, extra = {}) {
+      if (window.chrome && chrome.webview) {
+        chrome.webview.postMessage(Object.assign({ action }, extra));
+      }
+    }
+
+    function esc(value) {
+      return String(value == null ? "" : value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function setPage(page) {
+      app.page = page;
+      document.querySelectorAll(".page").forEach(pageNode => pageNode.classList.remove("active"));
+      document.getElementById("page-" + page).classList.add("active");
+      document.querySelectorAll(".tab").forEach(tab => tab.classList.toggle("active", tab.dataset.page === page));
+      render();
+    }
+
+    function currentMods() {
+      let list = [...(app.state.mods || [])];
+      const needle = app.search.trim().toLowerCase();
+
+      if (needle) {
+        list = list.filter(mod => {
+          const blob = [mod.name, mod.author, mod.description, mod.version, mod.category, mod.kind].join(" ").toLowerCase();
+          return blob.includes(needle);
+        });
+      }
+
+      switch (app.filter) {
+        case "installed":
+          list = list.filter(mod => mod.installed);
+          break;
+        case "enabled":
+          list = list.filter(mod => mod.enabled);
+          break;
+      }
+
+      return list;
+    }
+
+    function currentPacks() {
+      return [...(app.state.packs || [])];
+    }
+
+    function findEntry(key) {
+      return [...(app.state.mods || []), ...(app.state.packs || [])].find(item => item.key === key);
+    }
+
+    function render() {
+      const ready = !!app.state.gameDetected;
+      const mods = currentMods();
+      const packs = currentPacks();
+
+      document.getElementById("modsCountText").textContent = mods.length + " / " + (app.state.catalogCount || 0);
+      document.getElementById("packsCountText").textContent = (app.state.packsCount || 0) + " available";
+      document.getElementById("gameRootSetting").textContent = ready ? app.state.gameRoot : "Waiting for automatic Steam detection.";
+      document.getElementById("settingsModdedText").textContent = ready
+        ? "Steam launch is currently mapped to your enabled ADH mods."
+        : "ADH will attach to Steam as soon as Aestik is detected.";
+      document.getElementById("noticeLineOne").textContent = ready
+        ? "ADH is linked to your Aestik Steam install and will load the active mod set automatically when the game starts through Steam."
+        : "ADH is searching for your Aestik Steam install and will sync the launcher automatically when it is found.";
+      document.getElementById("noticeLineTwo").textContent = ready
+        ? "Choose vanilla for a clean Steam launch, or launch modded to use the enabled ADH setup."
+        : "Once Aestik is detected, you can launch either vanilla or modded directly from this screen.";
+      document.getElementById("modsFootNote").textContent = ready
+        ? "Launching from Steam will use the enabled mods shown here."
+        : "Waiting for game detection before Steam integration can be used.";
+
+      renderMods(mods);
+      renderPacks(packs);
+    }
+
+    function renderMods(mods) {
+      const root = document.getElementById("modsList");
+      if (!mods.length) {
+        root.innerHTML = "<div class=\"empty\">No mods match the current filter.</div>";
+        return;
+      }
+
+      root.innerHTML = mods.map(mod => {
+        const expanded = app.selectedKey === mod.key;
+        const stateText = mod.enabled ? "On" : "Off";
+        const installText = mod.installing
+          ? (mod.installStatusText || ("Downloading " + (mod.installProgressPercent || 0) + "%"))
+          : (mod.installed ? "Installed" : "Not installed");
+        const installActionButton = !mod.installed
+          ? `<button class="mini-btn install ${mod.installing ? "loading" : ""}" ${mod.installing ? "disabled" : ""} data-install="${esc(mod.key)}">${mod.installing ? (mod.installProgressPercent > 0 ? (mod.installProgressPercent + "%") : "Installing") : (mod.downloadUrl ? "Download" : "Open Site")}</button>`
+          : `<button class="mini-btn danger" data-delete="${esc(mod.key)}">Delete</button>`;
+        const progressMarkup = mod.installing
+          ? `<div class="mini-progress"><div class="mini-progress-fill" style="width:${Math.max(0, Math.min(100, mod.installProgressPercent || 0))}%"></div></div>`
+          : "";
+        const tags = [
+          `<span class="tag ${String(mod.trustLevel || "").toLowerCase() === "official" ? "official" : "unofficial"}">${esc(mod.trustLevel || "Unofficial")}</span>`,
+          `<span class="tag">${mod.installed ? "Installed" : "Catalog"}</span>`
+        ].join("");
+        const deps = (mod.depends || []).length
+          ? mod.depends.map(dep => "<span class=\"dep-chip\">" + esc(dep) + "</span>").join("")
+          : "<span class=\"dep-chip\">No dependencies</span>";
+        const repoButton = mod.sourceUrl && String(mod.trustLevel || "").toLowerCase() !== "official"
+          ? `<button class="ghost-btn repo-btn" data-repo="${esc(mod.key)}" title="Open website">Site</button>`
+          : "";
+        return `
+          <article class="mod-row ${expanded ? "expanded" : ""}" data-key="${esc(mod.key)}">
+            <div class="mod-head" data-select="${esc(mod.key)}">
+              <div class="mod-title">
+                <div class="mod-name">${esc(mod.name)}</div>
+                <div class="mod-subline">
+                  <span class="inline-status">${esc(installText)}</span>
+                  ${progressMarkup}
+                </div>
+              </div>
+              <div class="mod-state">
+                <div class="toggle ${mod.enabled ? "on" : ""} ${mod.installed ? "" : "disabled"}" data-toggle="${esc(mod.key)}"></div>
+                <span>${stateText}</span>
+              </div>
+              <div class="row-actions">
+                ${installActionButton}
+              </div>
+              <div class="row-actions">
+                <span class="expand-mark"></span>
+              </div>
+            </div>
+            <div class="row-detail">
+              <div class="detail-copy">${esc(mod.description || "No description provided.")}</div>
+              <div class="tag-row">${tags}</div>
+              <div class="detail-grid">
+                <div><b>Author</b>${esc(mod.author || "Unknown")}</div>
+                <div><b>Version</b>${esc(mod.version || "-")}</div>
+                <div><b>Status</b>${esc(mod.status || (mod.enabled ? "Enabled" : "Disabled"))}</div>
+                <div><b>Category</b>${esc(mod.category || "General")}</div>
+                <div><b>Kind</b>${esc(mod.kind || "code")}</div>
+                <div><b>Entry</b>${esc(mod.entryPath || mod.key)}</div>
+              </div>
+              <div class="dep-row">${deps}</div>
+              <div class="detail-actions">
+                ${repoButton}
+                ${mod.installed ? `<button class="ghost-btn" data-open-mod="${esc(mod.key)}">Open Folder</button>` : ""}
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      bindRows(root, "openModFolder");
+    }
+
+    function renderPacks(packs) {
+      const root = document.getElementById("packsList");
+      if (!packs.length) {
+        root.innerHTML = "<div class=\"empty\">No packs imported yet.</div>";
+        return;
+      }
+
+      root.innerHTML = packs.map(pack => {
+        const expanded = app.selectedKey === pack.key;
+        const deps = (pack.depends || []).length
+          ? pack.depends.map(dep => "<span class=\"dep-chip\">" + esc(dep) + "</span>").join("")
+          : "<span class=\"dep-chip\">No dependencies</span>";
+        return `
+          <article class="mod-row ${expanded ? "expanded" : ""}" data-key="${esc(pack.key)}">
+            <div class="mod-head" data-select="${esc(pack.key)}">
+              <div class="mod-name">${esc(pack.name)}</div>
+              <div class="mod-state">
+                <div class="toggle ${pack.enabled ? "on" : ""}" data-toggle="${esc(pack.key)}"></div>
+                <span>${pack.enabled ? "On" : "Off"}</span>
+              </div>
+              <div class="row-actions">
+                <button class="mini-btn danger" data-delete="${esc(pack.key)}">Delete</button>
+                <span class="expand-mark"></span>
+              </div>
+            </div>
+            <div class="row-detail">
+              <div class="detail-copy">${esc(pack.description || "No description provided.")}</div>
+              <div class="detail-grid">
+                <div><b>Author</b>${esc(pack.author || "Unknown")}</div>
+                <div><b>Version</b>${esc(pack.version || "-")}</div>
+                <div><b>Status</b>${esc(pack.status || (pack.enabled ? "Enabled" : "Disabled"))}</div>
+                <div><b>Category</b>${esc(pack.category || "Pack")}</div>
+                <div><b>Kind</b>${esc(pack.kind || "pack")}</div>
+                <div><b>Path</b>${esc(pack.entryPath || pack.key)}</div>
+              </div>
+              <div class="dep-row">${deps}</div>
+              <div class="detail-actions">
+                <button class="ghost-btn" data-open-pack="${esc(pack.key)}">Open Folder</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      bindRows(root, "openPackFolder");
+    }
+
+    function bindRows(root, openAction) {
+      root.querySelectorAll("[data-select]").forEach(node => {
+        node.addEventListener("click", event => {
+          if (event.target.closest("[data-toggle], [data-delete], [data-install], [data-repo], [data-open-mod], [data-open-pack]")) {
+            return;
+          }
+
+          const key = node.getAttribute("data-select");
+          app.selectedKey = app.selectedKey === key ? "" : key;
+          send("selectMod", { key: app.selectedKey });
+          render();
+        });
+      });
+
+      root.querySelectorAll("[data-toggle]").forEach(node => {
+        node.addEventListener("click", event => {
+          event.stopPropagation();
+          const key = node.getAttribute("data-toggle");
+          const entry = findEntry(key);
+          if (!entry || !entry.installed || entry.installing) {
+            return;
+          }
+          send("toggleMod", { key, enabled: !(entry && entry.enabled) });
+        });
+      });
+
+      root.querySelectorAll("[data-delete]").forEach(node => {
+        node.addEventListener("click", event => {
+          event.stopPropagation();
+          send("removeMod", { key: node.getAttribute("data-delete") });
+        });
+      });
+
+      root.querySelectorAll("[data-open-mod], [data-open-pack]").forEach(node => {
+        node.addEventListener("click", event => {
+          event.stopPropagation();
+          const key = node.getAttribute("data-open-mod") || node.getAttribute("data-open-pack");
+          send(openAction, { key });
+        });
+      });
+
+      root.querySelectorAll("[data-repo]").forEach(node => {
+        node.addEventListener("click", event => {
+          event.stopPropagation();
+          send("openWebsite", { key: node.getAttribute("data-repo") });
+        });
+      });
+
+      root.querySelectorAll("[data-install]").forEach(node => {
+        node.addEventListener("click", event => {
+          event.stopPropagation();
+          send("installCatalogMod", { key: node.getAttribute("data-install") });
+        });
+      });
+    }
+
+    function bindStaticEvents() {
+      document.querySelectorAll(".tab").forEach(tab => {
+        tab.addEventListener("click", () => setPage(tab.dataset.page));
+      });
+
+      const topbar = document.querySelector(".topbar");
+      topbar.addEventListener("mousedown", event => {
+        if (event.target.closest("button, input")) {
+          return;
+        }
+
+        send("windowDrag");
+      });
+
+      topbar.addEventListener("dblclick", event => {
+        if (event.target.closest("button, input")) {
+          return;
+        }
+
+        send("windowToggleMaximize");
+      });
+
+      document.addEventListener("click", event => {
+        const actionNode = event.target.closest("[data-action]");
+        if (actionNode) {
+          send(actionNode.dataset.action);
+        }
+
+        const filterNode = event.target.closest("[data-filter]");
+        if (filterNode) {
+          app.filter = filterNode.dataset.filter;
+          document.querySelectorAll(".chip").forEach(chip => chip.classList.toggle("active", chip.dataset.filter === app.filter));
+          render();
+        }
+      });
+
+      document.getElementById("modSearch").addEventListener("input", event => {
+        app.search = event.target.value || "";
+        render();
+      });
+
+    }
+
+    bindStaticEvents();
+
+    if (window.chrome && chrome.webview) {
+      chrome.webview.addEventListener("message", event => {
+        if (!event || !event.data) {
+          return;
+        }
+
+        app.state = event.data;
+        if (app.selectedKey && !findEntry(app.selectedKey)) {
+          app.selectedKey = "";
+        }
+        render();
+      });
+
+      chrome.webview.postMessage({ action: "ready" });
+    } else {
+      render();
+    }
+  </script>
+</body>
+</html>

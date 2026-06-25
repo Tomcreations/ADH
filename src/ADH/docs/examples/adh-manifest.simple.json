@@ -1,0 +1,46 @@
+{
+  "manifestVersion": "1.0",
+  "id": "tom.example-healthbar",
+  "name": "Example Health Bar",
+  "version": "1.0.0",
+  "author": "Tom",
+  "description": "Adds a basic enemy health bar overlay.",
+  "homepage": "https://example.com/example-healthbar",
+  "support": {
+    "game": "Aestik",
+    "gameVersions": [
+      "1.0.0",
+      "1.0.1"
+    ],
+    "loaderVersion": ">=1.0.0"
+  },
+  "classification": {
+    "channel": "unofficial",
+    "reviewedByAdh": false
+  },
+  "dependencies": [],
+  "install": {
+    "createFolders": [
+      {
+        "path": "Mods/ExampleHealthBar"
+      }
+    ],
+    "copyFiles": [
+      {
+        "from": "files/ExampleHealthBar.dll",
+        "to": "Mods/ExampleHealthBar/ExampleHealthBar.dll",
+        "overwrite": true
+      }
+    ]
+  },
+  "entrypoints": [
+    {
+      "type": "dotnet-assembly",
+      "path": "Mods/ExampleHealthBar/ExampleHealthBar.dll"
+    }
+  ],
+  "capabilities": [
+    "ui-overlay"
+  ],
+  "custom": {}
+}
