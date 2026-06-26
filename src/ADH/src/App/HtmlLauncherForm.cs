@@ -200,7 +200,7 @@ namespace AestikModLoader.App
             webView.CoreWebView2.WebMessageReceived += CoreWebView2_WebMessageReceived;
             webView.CoreWebView2.NavigationCompleted += CoreWebView2_NavigationCompleted;
             webView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
-            webView.CoreWebView2.Settings.AreDevToolsEnabled = true;
+            webView.CoreWebView2.Settings.AreDevToolsEnabled = false;
             webView.CoreWebView2.Settings.IsStatusBarEnabled = false;
         }
 

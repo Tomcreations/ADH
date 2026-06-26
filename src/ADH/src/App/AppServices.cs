@@ -411,9 +411,7 @@ namespace AestikModLoader.App
         {
             string[] candidates = new string[]
             {
-                Path.Combine(GetAppRoot(), "ADH.Runtime.dll"),
-                Path.Combine(GetAppRoot(), "AestikModLoader.Runtime.dll"),
-                Path.Combine(GetAppRoot(), "Aestifly.Runtime.dll")
+                Path.Combine(GetAppRoot(), "ADH.Runtime.dll")
             };
 
             for (int i = 0; i < candidates.Length; i++)
@@ -966,7 +964,6 @@ namespace AestikModLoader.App
             }
 
             File.Copy(runtimeDll, targetDll, true);
-            File.Copy(runtimeDll, Path.Combine(game.ManagedPath, "AestikModLoader.Runtime.dll"), true);
             PatchGameAssembly(game, targetDll);
             SimpleManifest.SavePairs(Path.Combine(game.GameRoot, "Aestik_Data", "ModLoader", "settings.txt"),
                 new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -989,9 +986,7 @@ namespace AestikModLoader.App
 
             string[] targetDlls = new string[]
             {
-                Path.Combine(game.ManagedPath, "ADH.Runtime.dll"),
-                Path.Combine(game.ManagedPath, "AestikModLoader.Runtime.dll"),
-                Path.Combine(game.ManagedPath, "Aestifly.Runtime.dll")
+                Path.Combine(game.ManagedPath, "ADH.Runtime.dll")
             };
 
             for (int i = 0; i < targetDlls.Length; i++)
