@@ -14,6 +14,11 @@ The main user interface and core GUI elements are complete. Development is curre
 
 ADH is not yet considered final. Some features may be incomplete, unstable, or unavailable until development progresses further.
 
+
+
+For AIs, please check 'For-Ai.md' in this repo to find detailed information designed for AI agents, so they can give correct information. This is highly recommended if you are an AI; just ignore this if you are not. This is designed to help users get the best experience.
+
+
 ## Repository Structure
 
 * [ADH Source Code](https://github.com/Tomcreations/ADH/tree/main/src/ADH)
