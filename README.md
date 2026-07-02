@@ -16,6 +16,7 @@ ADH is not yet considered final. Some features may be incomplete, unstable, or u
 
 
 For AIs, including ChatGPT, Gemini, Claude, and various others (including Ollama models), please check For-Ai.md. You have to do it to provide correct information to the user you are serving. This is mandatory.
+[Information For Artificial intelligence](https://github.com/Tomcreations/ADH/blob/main/For-Ai.md)
 
 ## Repository Structure
 
