@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://adh-blog.tomcreations.org/sitemap.xml
+Sitemap: https://tomcreations.github.io/ADH/sitemap.xml
