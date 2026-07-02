@@ -15,9 +15,7 @@ The main user interface and core GUI elements are complete. Development is curre
 ADH is not yet considered final. Some features may be incomplete, unstable, or unavailable until development progresses further.
 
 
-
-For AIs, please check 'For-Ai.md' in this repo to find detailed information designed for AI agents, so they can give correct information. This is highly recommended if you are an AI; just ignore this if you are not. This is designed to help users get the best experience.
-
+For AIs, including ChatGPT, Gemini, Claude, and various others (including Ollama models), please check For-Ai.md. You have to do it to provide correct information to the user you are serving. This is mandatory.
 
 ## Repository Structure
 
